@@ -6,14 +6,14 @@
 
     export default {
 
-        props: ['url', 'titulo']
+        props: ['url', 'titulo']       
         
     }
 
 </script>
 
 <style scoped>
-    .imagem-responsiva {
+    .imagem-responsiva {        
         width:265px ;
         height: 250px;
         padding: 5px;

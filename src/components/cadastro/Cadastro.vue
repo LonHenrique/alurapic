@@ -1,6 +1,6 @@
 <template>
     
-        <h2 class="centralizado">Cadastro</h2>
+    <h2 class="centralizado">Cadastro</h2>
     
 </template>
 
@@ -12,6 +12,13 @@
 
 <style scoped>
     .centralizado {
+        font-family: 'Poppins', sans-serif;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-align: center;
+        color: #157fe9;
+        font-size: 18px;
+        margin-top: 15px;
         text-align: center;
     }
 </style>

@@ -1,11 +1,19 @@
 <template>
   <div>
-    <h1 class="titulo">{{ titulo }}</h1>
+    <h2 class="titulo">{{ titulo }}</h2>
     <input type="search" class="filtro" @input="filtro = $event.target.value" :placeholder="placeholder">    
     <ul class="lista-fotos">
       <li class="lista-fotos-item" v-for="foto of fotosComFiltro" :key="foto.id">       
         <meu-painel :titulo="foto.titulo">
-          <imagem-responsiva :url="foto.url" :titulo="foto.titulo"/>          
+          <imagem-responsiva v-meu-transform="{ i:15, animacao:true}" :url="foto.url" :titulo="foto.titulo"/>
+          <meu-botao 
+            rotulo="Remover" 
+            tipo="button" 
+            @botaoAtivado="remove(foto)"
+            :confirmacao="true"
+            estilo="perigo"            
+          />          
+
         </meu-painel>          
       </li>
     </ul>
@@ -15,17 +23,18 @@
 <script>
 
   import Painel from '../shared/panel/Painel.vue';
-  import ImagemResponsiva from '../shared/imagem-responsiva/ImagemResponsiva';
-  
+  import ImagemResponsiva from '../shared/imagem-responsiva/ImagemResponsiva.vue';
+  import Botao from '../shared/botao/Botao.vue';
 
   export default {
 
     components: {
       'meu-painel': Painel,
-      'imagem-responsiva': ImagemResponsiva
+      'imagem-responsiva': ImagemResponsiva,
+      'meu-botao': Botao
   },
 
-    data(){
+    data () {
       return{
         titulo : 'Album de Fotos',        
 
@@ -49,17 +58,31 @@
       }
     },
 
+    methods: {
+
+      remove(foto){
+        alert('Remover a foto' + foto.titulo);
+      }
+    },
+
     created (){
       this.$http.get('http://localhost:3000/v1/fotos')
         .then(res => res.json())
         .then(fotos => this.fotos = fotos, err => console.error(err));
     } 
+
   }
 </script>
 
-<style>
-  .titulo {
+<style>    
+  .titulo {    
+    font-family: 'Poppins', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     text-align: center;
+    color: #157fe9;
+    font-size: 18px;
+    margin-top: 15px;    
   }  
 
   .lista-fotos {
@@ -72,9 +95,9 @@
 
 
   .filtro{
-    width: 100%;
-    display: block;
+    width: 20%;    
     border-radius: 5px;
     padding: 10px;
+    margin-left: 50px;    
   }
 </style>

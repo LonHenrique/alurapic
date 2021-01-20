@@ -11,7 +11,9 @@
 
 <script>
   export default {    
+    
     props: ['titulo'],
+
     data(){
       return {
         visivel: true
@@ -34,6 +36,10 @@
   }
 
   .painel .painel-titulo {
+    
+    font-family: "Gaegu", Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     text-align: center;    
     background: lightblue;
     margin: 5px;

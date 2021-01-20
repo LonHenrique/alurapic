@@ -11,6 +11,8 @@ import VueRouter from 'vue-router';
 import { routes } from './routes';
 // registrar
 
+import './directives/Transform';
+
 Vue.use(VueResource);
 Vue.use(VueRouter);
 
