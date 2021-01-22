@@ -11,7 +11,7 @@
 
 <script>
   export default {    
-    
+
     props: ['titulo'],
 
     data(){
@@ -55,4 +55,7 @@
     transition: opacity .2s;
   }
 
+  .painel-conteudo {
+    overflow: hidden;
+  }
 </style>

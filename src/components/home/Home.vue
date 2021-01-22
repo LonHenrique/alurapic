@@ -1,11 +1,12 @@
 <template>
   <div>
     <h2 class="titulo">{{ titulo }}</h2>
+    <p v-show="mensagem" class="centralizado">{{ mensagem }}</p>
     <input type="search" class="filtro" @input="filtro = $event.target.value" :placeholder="placeholder">    
     <ul class="lista-fotos">
       <li class="lista-fotos-item" v-for="foto of fotosComFiltro" :key="foto.id">       
         <meu-painel :titulo="foto.titulo">
-          <imagem-responsiva v-meu-transform="{ i:15, animacao:true}" :url="foto.url" :titulo="foto.titulo"/>
+          <imagem-responsiva v-meu-transform:scale.animate="1.2" :url="foto.url" :titulo="foto.titulo"/>
           <meu-botao 
             rotulo="Remover" 
             tipo="button" 
@@ -25,6 +26,7 @@
   import Painel from '../shared/panel/Painel.vue';
   import ImagemResponsiva from '../shared/imagem-responsiva/ImagemResponsiva.vue';
   import Botao from '../shared/botao/Botao.vue';
+  import transform from '../../directives/Transform.js';
 
   export default {
 
@@ -32,17 +34,25 @@
       'meu-painel': Painel,
       'imagem-responsiva': ImagemResponsiva,
       'meu-botao': Botao
-  },
+    },
+
+    directives: {
+      'meu-transform' : transform
+    },
 
     data () {
+
       return{
+
         titulo : 'Album de Fotos',        
 
         fotos : [],
 
         filtro: '',        
 
-        placeholder: 'Encontre a Imagem'
+        placeholder: 'Encontre a Imagem',
+
+        mensagem: ' '
       }
     }, 
 
@@ -58,23 +68,37 @@
       }
     },
 
-    methods: {
+    methods: {       
 
-      remove(foto){
-        alert('Remover a foto' + foto.titulo);
-      }
+      remove(foto) {
+      
+      this.resource
+        .delete({ id: foto._id })
+        .then(() => { 
+            let indice = this.fotos.indexOf(foto);
+            this.fotos.splice(indice, 1);
+            this.mensagem = 'Foto removida com sucesso'
+        },  err => {
+            this.mensagem = 'Não foi possível remover a foto';
+            console.log(err);
+        });
+      }      
     },
 
-    created (){
-      this.$http.get('http://localhost:3000/v1/fotos')
+    created(){
+
+      this.resource = this.$resource('v1/fotos{/id}');
+
+      this.resource
+        .query()
         .then(res => res.json())
         .then(fotos => this.fotos = fotos, err => console.error(err));
     } 
+  }  
 
-  }
 </script>
 
-<style>    
+<style scoped>    
   .titulo {    
     font-family: 'Poppins', sans-serif;
     -webkit-font-smoothing: antialiased;
@@ -85,6 +109,11 @@
     margin-top: 15px;    
   }  
 
+  .centralizado {
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
+    
+  }
   .lista-fotos {
     list-style: none;            
   }
