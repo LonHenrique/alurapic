@@ -36,7 +36,7 @@
                 }
                 this.$emit('botaoAtivado');
             }
-        },   
+        },
         
         computed: {
             

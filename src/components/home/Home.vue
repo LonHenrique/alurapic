@@ -6,7 +6,16 @@
     <ul class="lista-fotos">
       <li class="lista-fotos-item" v-for="foto of fotosComFiltro" :key="foto.id">       
         <meu-painel :titulo="foto.titulo">
-          <imagem-responsiva v-meu-transform:scale.animate="1.2" :url="foto.url" :titulo="foto.titulo"/>
+          <imagem-responsiva 
+            v-meu-transform:scale.animate="1.2" 
+            :url="foto.url" 
+            :titulo="foto.titulo"
+          />
+
+          <router-link :to="{ name : 'editar', params:{ id: foto._id }}">
+            <meu-botao tipo="button" rotulo="Editar"></meu-botao>
+          </router-link>
+
           <meu-botao 
             rotulo="Remover" 
             tipo="button" 
@@ -27,6 +36,7 @@
   import ImagemResponsiva from '../shared/imagem-responsiva/ImagemResponsiva.vue';
   import Botao from '../shared/botao/Botao.vue';
   import transform from '../../directives/Transform.js';
+  import FotoService from '../../domain/foto/FotoService.js';
 
   export default {
 
@@ -44,15 +54,11 @@
 
       return{
 
-        titulo : 'Album de Fotos',        
-
+        titulo : 'Album de Fotos',  
         fotos : [],
-
-        filtro: '',        
-
+        filtro: '',
         placeholder: 'Encontre a Imagem',
-
-        mensagem: ' '
+        mensagem: ''
       }
     }, 
 
@@ -71,28 +77,29 @@
     methods: {       
 
       remove(foto) {
-      
-      this.resource
-        .delete({ id: foto._id })
-        .then(() => { 
+
+      this.service
+        .apaga(foto._id)
+        .then(
+          () => {
             let indice = this.fotos.indexOf(foto);
             this.fotos.splice(indice, 1);
             this.mensagem = 'Foto removida com sucesso'
-        },  err => {
-            this.mensagem = 'Não foi possível remover a foto';
-            console.log(err);
-        });
-      }      
-    },
+          }, 
+          err => {
+            this.mensagem = err.message;
+          }
+        );
+      }     
+    },   
 
     created(){
 
-      this.resource = this.$resource('v1/fotos{/id}');
+      this.service = new FotoService(this.$resource);
 
-      this.resource
-        .query()
-        .then(res => res.json())
-        .then(fotos => this.fotos = fotos, err => console.error(err));
+      this.service
+        .lista()
+        .then(fotos => this.fotos = fotos, err => this.mensagem = err.message);
     } 
   }  
 
@@ -112,6 +119,8 @@
   .centralizado {
     text-align: center;
     font-family: 'Poppins', sans-serif;
+    color: red;
+    font-size: 18px;
     
   }
   .lista-fotos {

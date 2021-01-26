@@ -1,8 +1,8 @@
 <template>
     
     <div class="container">
-        <h1 class="centralizado">Cadastro</h1>
-        <h2 class="centralizado"></h2>
+        <h1 v-if="foto._id" class="centralizado">Alterando {{ foto.titulo }}</h1>
+        <h1 v-else class="centralizado">Cadastrando</h1>        
 
         <form @submit.prevent="grava()">
             <div class="controle">
@@ -23,7 +23,7 @@
 
             <div class="centralizado">
                 <meu-botao rotulo="GRAVAR" tipo="submit"/>
-                <router-link to="/"><meu-botao rotulo="VOLTAR" tipo="button"/></router-link>
+                <router-link :to="{ name: 'home' }"><meu-botao rotulo="VOLTAR" tipo="button"/></router-link>
             </div>
 
             <div class="">
@@ -44,6 +44,7 @@
 import ImagemResponsiva from '../shared/imagem-responsiva/ImagemResponsiva';
 import Botao from '../shared/botao/Botao';
 import Foto from '../../domain/foto/Foto';
+import FotoService from '../../domain/foto/FotoService'
 
 
     export default {
@@ -56,30 +57,40 @@ import Foto from '../../domain/foto/Foto';
         },
 
         data() {
-
             return {
 
                 foto: new Foto(),
-                resource: {}
+
+                id: this.$route.params.id
             }
-        },        
+        },       
 
-        methods: {
+       methods: {
 
-            grava() {
+        grava() {
 
-                console.log(this.foto);
-
-                this.resource
-                .save(this.foto)
-                .then(() => this.foto = new Foto(), err => console.log(err));
+            this.service
+                .cadastra(this.foto)
+                .then(() => {
+                    if(this.id) this.$router.push({ name: 'home' });
+                        this.foto = new Foto()}
+                , err => console.log(err));
 
             }
-        },
+        }, 
 
         created() {
-            this.resource = this.$resource('v1/fotos{/id}');
+
+            this.service = new FotoService(this.$resource);
+
+            if(this.id){
+                this.service
+                    .busca(this.id)
+                    .then(foto => this.foto = foto);
+
+            }
         }
+
     }
 
 </script>
