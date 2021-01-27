@@ -12,16 +12,23 @@ import { routes } from './routes';
 // registrar
 
 import './directives/Transform';
+import { ValidationProvider} from 'vee-validate';
+
+/* Registrando no Global Vue Object para uso das importações */
+
 
 Vue.use(VueResource);
-Vue.use(VueRouter);
+Vue.http.options.root = 'http://localhost:3000';
 
+Vue.use(VueRouter);
 const router = new VueRouter({
   routes: routes, 
   mode: 'history'
 });
 
-Vue.http.options.root = 'http://localhost:3000';
+Vue.component('ValidationProvider', ValidationProvider); 
+
+
 
 new Vue({
   el: '#app',

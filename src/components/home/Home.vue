@@ -54,10 +54,10 @@
 
       return{
 
-        titulo : 'Album de Fotos',  
+        titulo : 'Minhas Séries',  
         fotos : [],
         filtro: '',
-        placeholder: 'Encontre a Imagem',
+        placeholder: 'Encontre a Série',
         mensagem: ''
       }
     }, 

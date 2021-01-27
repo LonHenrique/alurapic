@@ -5,20 +5,27 @@
         <h1 v-else class="centralizado">Cadastrando</h1>        
 
         <form @submit.prevent="grava()">
-            <div class="controle">
-                <label for="titulo" id="input">TÍTULO</label>
-                <input id="titulo" autocomplete="off" v-model.lazy="foto.titulo">
-            </div>
+            <ValidationProvider rules="required" v-slot="{ errors }">
+                <div class="controle">                
+                    <label for="titulo" id="input">TÍTULO</label>
+                    <input v-model="foto.titulo" id="titulo" name="titulo" type="text" autocomplete="off" placeholder="Titulo da série"> 
+                    <span>{{ errors[0] }}</span>                                       
+                </div>
+            </ValidationProvider>
 
             <div class="controle">
                 <label for="titulo" id="input">URL</label>
-                <input id="url" autocomplete="off" v-model.lazy="foto.url">
+                <input id="url" autocomplete="off" v-model="foto.url">
 
             </div>
 
             <div class="controle">
-                <label for="titulo" id="input">DESCRIÇÃO</label>
-                <textarea id="descricao" autocomplete="off" v-model="foto.descricao"></textarea>
+                <ValidationProvider rules="minmax:0,50" v-slot="{ errors }">
+                    <label for="titulo" id="input">DESCRIÇÃO</label>
+                    <textarea v-model="foto.descricao" id="descricao" name="descricao" autocomplete="off" placeholder="Descrição da série"></textarea>
+                    <span>{{ errors[0] }}</span>
+                    <span>{{ foto.descricao.length}}</span>
+                </ValidationProvider>
             </div>            
 
             <div class="centralizado">
@@ -31,12 +38,8 @@
                 <imagem-responsiva v-show="foto.url" :url="foto.url" :titulo="foto.titulo"></imagem-responsiva>
                 <p>{{ foto.descricao }}</p>                
             </div>
-
         </form>
-
-    </div>
-
-    
+    </div>    
 </template>
 
 <script>
@@ -45,6 +48,25 @@ import ImagemResponsiva from '../shared/imagem-responsiva/ImagemResponsiva';
 import Botao from '../shared/botao/Botao';
 import Foto from '../../domain/foto/Foto';
 import FotoService from '../../domain/foto/FotoService'
+import { ValidationProvider, extend } from 'vee-validate';
+import { required } from 'vee-validate/dist/rules';
+
+
+extend('minmax', {
+    validate(foto, { min, max }){
+        return foto.length >= min && foto.length <= max;        
+    },    
+    params: ['min','max'],
+    message: (fieldName, placeholders) => {
+        return `O campo, ${fieldName} deve ter pelo menos ${placeholders.max} caracteres no máximo`
+    }
+});
+
+extend('required', {
+    ...required,
+    message:"campo obrigatório"
+
+});
 
 
     export default {
@@ -52,7 +74,8 @@ import FotoService from '../../domain/foto/FotoService'
         components: {
 
         'imagem-responsiva': ImagemResponsiva,
-        'meu-botao': Botao
+        'meu-botao': Botao,
+        'ValidationProvider' : ValidationProvider
             
         },
 
