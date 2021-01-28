@@ -9,10 +9,12 @@ import VueRouter from 'vue-router';
 
 // importar o arquivo de rotas
 import { routes } from './routes';
-// registrar
 
+// importando directiva que transforma o tamanho da imagem no card
 import './directives/Transform';
-import { ValidationProvider} from 'vee-validate';
+
+// importando a biblioteca de validação de formulário vee-validate
+import { ValidationProvider, ValidationObserver, localize } from 'vee-validate';
 
 /* Registrando no Global Vue Object para uso das importações */
 
@@ -21,14 +23,18 @@ Vue.use(VueResource);
 Vue.http.options.root = 'http://localhost:3000';
 
 Vue.use(VueRouter);
+
 const router = new VueRouter({
   routes: routes, 
   mode: 'history'
 });
 
 Vue.component('ValidationProvider', ValidationProvider); 
+Vue.component('ValidationObserver', ValidationObserver);
 
-
+localize(
+  'pt_BR'
+)
 
 new Vue({
   el: '#app',
