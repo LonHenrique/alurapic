@@ -1,7 +1,8 @@
 import Vue from 'vue'
+import Bootstrap from 'Bootstrap'
 import App from './App.vue'
 
-// importa o Vue-Resource para consumo de API
+// importa o Vue-Resource para auxiliar no consumo de API
 import VueResource from 'vue-resource';
 
 // importar o router para auxilio de navegação entre rotas!
@@ -16,8 +17,13 @@ import './directives/Transform';
 // importando a biblioteca de validação de formulário vee-validate
 import { ValidationProvider, ValidationObserver, localize } from 'vee-validate';
 
-/* Registrando no Global Vue Object para uso das importações */
+// importando o css do bootstrap para aplicação
+import './bootstrap/dist/css/bootstrap.css';
 
+// importando o custom css para aplicação
+import './css/custom.css';
+
+/* Registrando no Global Vue Object para uso das importações */
 
 Vue.use(VueResource);
 Vue.http.options.root = 'http://localhost:3000';
