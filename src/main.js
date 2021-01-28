@@ -1,5 +1,4 @@
 import Vue from 'vue'
-import Bootstrap from 'Bootstrap'
 import App from './App.vue'
 
 // importa o Vue-Resource para auxiliar no consumo de API
@@ -18,7 +17,7 @@ import './directives/Transform';
 import { ValidationProvider, ValidationObserver, localize } from 'vee-validate';
 
 // importando o css do bootstrap para aplicação
-import './bootstrap/dist/css/bootstrap.css';
+import 'bootstrap/dist/css/bootstrap.css';
 
 // importando o custom css para aplicação
 import './css/custom.css';
