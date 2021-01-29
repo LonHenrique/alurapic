@@ -1,0 +1,32 @@
+.titulo {    
+  font-family: 'Poppins', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #157fe9;
+  font-size: 18px;
+  margin-top: 15px;    
+}  
+
+.centralizado {
+  text-align: center;
+  font-family: 'Poppins', sans-serif;
+  color: red;
+  font-size: 18px;
+  
+}
+.lista-fotos {
+  list-style: none;            
+}
+
+.lista-fotos .lista-fotos-item {
+  display: inline-block;
+}
+
+
+.filtro{
+  width: 20%;    
+  border-radius: 5px;
+  padding: 10px;
+  margin-left: 50px;    
+}
