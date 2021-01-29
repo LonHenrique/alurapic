@@ -1,4 +1,4 @@
-# alurapic
+# Minhas Séries
 
 > Curso de VueJS Alura
 
